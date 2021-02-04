@@ -5,15 +5,13 @@ class UI {
     this.bodyInput = document.querySelector('#body');
     this.idInput = document.querySelector('#id');
     this.postSubmit = document.querySelector('.post-submit');
-    this.forState = 'add'; //устанавливаем по умолчанию стату формы в Создать Новый
+    this.forState = 'add'; 
   }
 
-
-  // Отображаем посты
   showPosts(posts) {
     let output = '';
 
-    posts.forEach((post) => { //отрисовываем каждые пост в своем блоке
+    posts.forEach((post) => { 
       output += `
         <div class="card mb-3">
           <div class="card-body">
@@ -32,16 +30,15 @@ class UI {
     this.post.innerHTML = output;
   }
 
-  // Показываем подсказку
   showAlert(message, className) {
     this.clearAlert();
 
-    const div = document.createElement('div'); //создаем блок под сообщение
-    div.className = className; //присоединяем к нему класс
+    const div = document.createElement('div'); 
+    div.className = className;
 
-    div.appendChild(document.createTextNode(message)); //вставляем внутрь блока сообщение
-    const container = document.querySelector('.postsContainer'); //ищем родителя
-    const posts = document.querySelector('#posts'); //ищем блок перед которым ставлять
+    div.appendChild(document.createTextNode(message)); 
+    const container = document.querySelector('.postsContainer');
+    const posts = document.querySelector('#posts'); 
     container.insertBefore(div, posts);
 
     // timeout
@@ -51,63 +48,55 @@ class UI {
   }
 
 
-  // Очищаем форму подстказки
   clearAlert() {
-    const currentAlert = document.querySelector('.alert'); //ищем блок с сообщением
+    const currentAlert = document.querySelector('.alert'); 
     if (currentAlert) {
-      currentAlert.remove(); //если он найден - удаляем
+      currentAlert.remove(); 
     }
   }
 
-  // Очищаем опля ввода
   clearField() {
     this.titleInput.value = '';
     this.bodyInput.value = ''
   }
 
-  // Заполняем форму при редактирвроваии
+
   fillForm(data) {
     this.titleInput.value = data.title;
     this.bodyInput.value = data.body;
-    this.idInput.value = data.id; //устанавлиаем ID - тем самы понимаем, что это не новый пост Без ID
-    this.changeFormState('edit'); //меняем статус формы на Редактирование
+    this.idInput.value = data.id; 
+    this.changeFormState('edit'); 
   }
 
-
-  clearIdInput(){ //очищаем ID  в скрытом поле
+  clearIdInput(){ 
     this.idInput.value = '';
   }
 
-// Меняем стиль формы
+
   changeFormState(type) {
     if (type === 'edit') {
-      // Меняем текст и класс кнопки Submit
       this.postSubmit.textContent = "Update Post";
       this.postSubmit.className = 'post-submit btn btn-warning btn-block';
 
-      // Создаем кнопку редактирования
       const button = document.createElement('button');
       button.className = 'post-cancel btn btn-light btn-block';
       button.appendChild(document.createTextNode('Cancel Edit'));
 
-      const cardForm = document.querySelector('.card-form'); //ищем родителя
-      const formEnd = document.querySelector('.form-end'); //ищем блок перед которым надо вставить кнопку
-      cardForm.insertBefore(button, formEnd);  //вставляем кнопку в форму перед элементом
+      const cardForm = document.querySelector('.card-form');
+      const formEnd = document.querySelector('.form-end'); 
+      cardForm.insertBefore(button, formEnd); 
 
     } else {
-// Меняем текст и класс кнопки Submit на стандартную
       this.postSubmit.textContent = "Post it";
       this.postSubmit.className = 'post-submit btn btn-primary btn-block';
 
-      // Если есть кнопка то убираем ее
       if(document.querySelector('.post-cancel')){
         document.querySelector('.post-cancel').remove();
       }
 
-      this.clearIdInput(); //удаляем ID из скрытого опля
+      this.clearIdInput();
 
-      this.clearField(); //очищаем поля формы
-
+      this.clearField(); 
     }
   }
 }

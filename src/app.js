@@ -32,42 +32,38 @@ function submitPost() {
   // Валидация на пустые поля
   if (title === '' || body === '') {
     ui.showAlert('Please fill in all fields', ' alert alert-danger');
-  } else {  //если поля заполненны
+  } else { 
 
     // Проверяем установлен ли ID
-    // Если он пустой, то создаем пост
     if (id === '') {
       // СОЗДАТЬ ПОСТ
-      // если пост успешносощдан - перерисовыаем страницу
       http.post('http://localhost:3000/posts', data)
         .then(data => {
           ui.showAlert("Post added", 'alert alert-success');
           ui.clearField();
-          getPosts();// если пост успешносощдан - перерисовыаем страницу
+          getPosts();
         })
         .catch(err => console.log(err))
-    } else {  //если ID установлен , значит мы в режиме редактирования
+    } else {
       http.put(`http://localhost:3000/posts/${id}`, data)
         .then(data => {
           ui.showAlert("Post updated", 'alert alert-success');
-          ui.changeFormState('add'); //меняем статус формы на базовый
-          getPosts();// если пост успешносощдан - перерисовыаем страницу
+          ui.changeFormState('add'); 
+          getPosts();
         })
         .catch(err => console.log(err))
     }
   }
 }
 
-
-// Удаляем пост
 function deletePost(e) { // реагируем на событие
-  if (e.target.parentElement.classList.contains('delete')) {  //ищем родителя с классом delete
-    const id = e.target.parentElement.dataset.id; //у родителя берем параметр id
+  if (e.target.parentElement.classList.contains('delete')) { 
+    const id = e.target.parentElement.dataset.id;
     if (confirm("Are you sure?")) {
       http.delete(`http://localhost:3000/posts/${id}`)
         .then(data => {
           ui.showAlert("post removed", 'alert alert-success');
-          getPosts(); //перерисовыаем страницу
+          getPosts(); 
         })
         .catch(err => console.log(err));
     }
@@ -78,21 +74,20 @@ function deletePost(e) { // реагируем на событие
 
 // РЕДАКТИРОВАНИЕ
 function enableEdit(e) {
-  if (e.target.parentElement.classList.contains('edit')) {  //ищем родителя с классом delete
-    const id = e.target.parentElement.dataset.id; //у родителя берем параметр id
+  if (e.target.parentElement.classList.contains('edit')) { 
+    const id = e.target.parentElement.dataset.id; 
     const body = e.target.parentElement.previousElementSibling.textContent;
     const title = e.target.parentElement.previousElementSibling.previousElementSibling.textContent;
-    const data = {  //формируем объект
-      id: id,  //одно и тоже в стиле записи
+    const data = { 
+      id: id,  
       title,
       body
     }
-    ui.fillForm(data); //заполняем поля формы
+    ui.fillForm(data); 
   }
   e.preventDefault();
 }
 
-// Отменяем редактирование по кнопке back
 function cancelEdit(e) {
   if (e.target.classList.contains('post-cancel')) {
     ui.changeFormState('add');
